@@ -78,14 +78,20 @@ class Bin_Tree
   def dfs_rec(find, node = @root)
     return if node.nil?
     if node.value == find 
-	  return node
+	  found = node
 	end
-    dfs_rec(find, node.left) unless node.left == nil
-    dfs_rec(find, node.right) unless node.right == nil
-  end
-  
-  def inspect
-    
+	
+    left = dfs_rec(find, node.left) unless node.left.nil?
+	if (left)
+	  found = left
+	end
+
+    right = dfs_rec(find, node.right) unless node.right.nil?
+	if (right)
+	  found = right
+	end
+	
+	return found
   end
   
   def inOrder(root = @root)
@@ -94,6 +100,22 @@ class Bin_Tree
 	  print root.value.to_s + " "
 	  inOrder(root.right)
 	end 
+  end
+  
+  def preOrder(root = @root)
+    if root
+	  print root.value.to_s + " "
+	  preOrder(root.left)
+	  preOrder(root.right)
+	end
+  end
+  
+  def postOrder(root = @root)
+    if root
+	  postOrder(root.left)
+	  postOrder(root.right)
+	  print root.value.to_s + " "
+	end
   end
   
   def layer_traversal
@@ -108,17 +130,3 @@ class Bin_Tree
 	
   end
 end 
-
-def test_cases
-test = Bin_Tree.new()
-test.build_tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
-test.inOrder()
-n = test.breadth_first_search(67)
-s = test.depth_first_search(67)
-t = test.dfs_rec(23)
-puts n.value unless n.nil?
-puts s.value unless s.nil?
-puts t.value unless t.nil?
-end
-
-#test_cases
